@@ -1,0 +1,9 @@
+env:
+  - BUILD_COMMAND="./mvnw install"
+  - BUILD_COMMAND="./gradlew build"
+
+language: java
+jdk:
+  - oraclejdk8
+
+script: (eval "$BUILD_COMMAND")
