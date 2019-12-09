@@ -2,24 +2,25 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.manosbatsis.scrudbeans</groupId>
-	<artifactId>scrudbeans-template</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<artifactId>scrudbeans-template-kotlin</artifactId>
+	<version>0.2-SNAPSHOT</version>
 	<properties>
-		<java.version>1.8</java.version>
 		<h2.version>1.4.197</h2.version>
-		<lombok.version>1.18.4</lombok.version>
+		<java.version>1.8</java.version>
+		<kotlin.version>1.2.71</kotlin.version>
+		<kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-		<maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
-		<maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+		<maven-failsafe-plugin.version>3.0.0-M3</maven-failsafe-plugin.version>
+		<maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
 		<build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
-		<scrudbeans.version>0.12</scrudbeans.version>
+		<scrudbeans.version>0.14</scrudbeans.version>
 		<spring-boot.version>2.1.1.RELEASE</spring-boot.version>
+		<springfox-swagger.version>2.9.2</springfox-swagger.version>
 		<!-- tunn on/off as needed -->
 		<spring-boot.exclude-devtools>true</spring-boot.exclude-devtools>
-		<springfox-swagger.version>2.9.2</springfox-swagger.version>
-
+		<it.skip>false</it.skip>
 	</properties>
 	<repositories>
 		<repository>
@@ -72,6 +73,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
@@ -83,12 +89,14 @@
 			<version>${h2.version}</version>
 			<!--scope>test</scope-->
 		</dependency>
-		<!-- Provided/code generation Dependencies -->
+		<!-- Kotlin Dependencies -->
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>${lombok.version}</version>
-			<scope>provided</scope>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-reflect</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib-jdk8</artifactId>
 		</dependency>
 		<!-- Test Dependencies -->
 		<dependency>
@@ -111,12 +119,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.module</groupId>
-			<artifactId>jackson-module-parameter-names</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jdk8</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<reporting>
@@ -152,6 +157,33 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>${maven-failsafe-plugin.version}</version>
+				<configuration>
+					<skipITs>${it.skip}</skipITs>
+					<includes>
+						<include>**/*IT.java</include>
+					</includes>
+				</configuration>
+				<!--
+                running UT and IT's:
+
+                mvn clean verify
+
+                running IT's but NOT UT's
+
+                mvn clean verify -Dsurefire.skip=true
+
+                running UT but not IT's:
+
+                mvn clean verify -DskipITs=true
+                -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -174,6 +206,79 @@
 							<sources>
 								<source>${basedir}/target/generated-sources/annotations</source>
 							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<version>${kotlin.version}</version>
+				<configuration>
+					<compilerPlugins>
+						<plugin>jpa</plugin>
+						<plugin>spring</plugin>
+					</compilerPlugins>
+					<args>
+						<arg>-Xjsr305=strict</arg>
+					</args>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-noarg</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-allopen</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>kapt</id>
+						<goals>
+							<goal>kapt</goal>
+						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>src/main/kotlin</sourceDir>
+							</sourceDirs>
+							<annotationProcessorPaths>
+								<!-- Specify your annotation processors here. -->
+								<annotationProcessorPath>
+									<artifactId>scrudbeans-annotation-processor-kotlin</artifactId>
+									<groupId>com.github.manosbatsis.scrudbeans</groupId>
+									<version>${scrudbeans.version}</version>
+								</annotationProcessorPath>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compile</id>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>src/main/kotlin</sourceDir>
+								<sourceDir>src/main/resources</sourceDir>
+								<sourceDir>target/generated-sources/kaptKotlin/compile</sourceDir>
+							</sourceDirs>
+						</configuration>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<goals>
+							<goal>test-compile</goal>
+						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>src/test/kotlin</sourceDir>
+								<sourceDir>src/test/resources</sourceDir>
+								<sourceDir>target/generated-sources/kaptKotlin/test</sourceDir>
+							</sourceDirs>
 						</configuration>
 					</execution>
 				</executions>
