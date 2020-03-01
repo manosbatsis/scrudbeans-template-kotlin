@@ -3,7 +3,7 @@ package mykotlinpackage.test
 import com.github.manosbatsis.scrudbeans.api.error.ConstraintViolationEntry
 
 data class SimpleErrorResponse(
-        var title: String? = null,
+        var message: String? = null,
         var remoteAddress: String? = null,
         var requestMethod: String? = null,
         var requestUrl: String? = null,

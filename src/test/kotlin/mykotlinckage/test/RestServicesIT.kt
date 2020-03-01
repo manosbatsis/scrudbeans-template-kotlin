@@ -75,7 +75,7 @@ class RestServicesIT : AbstractRestAssuredIT() {
         order = RestAssured.given()
                 .spec(defaultSpec())
                 .body(order)
-                .put("/api/rest/orders/" + order.getScrudBeanId())
+                .put("/api/rest/orders/" + order.id)
                 .then()
                 .statusCode(200).extract().`as`(Order::class.java)
         assertEquals(email + "_updated", order.email)
@@ -84,13 +84,13 @@ class RestServicesIT : AbstractRestAssuredIT() {
         //============================
         // Prepare the patch
         val orderMap: MutableMap<String, Any> = HashMap()
-        orderMap.put("id", order.getScrudBeanId())
+        orderMap.put("id", order.id!!)
         orderMap["email"] = order.email.toString() + "_patched"
         // Submit the patch
         order = RestAssured.given()
                 .spec(defaultSpec())
                 .body(orderMap)
-                .put("/api/rest/orders/" + order.getScrudBeanId())
+                .put("/api/rest/orders/" + order.id)
                 .then()
                 .statusCode(200).extract().`as`(Order::class.java)
         assertEquals(email + "_updated_patched", order.email)
@@ -98,7 +98,7 @@ class RestServicesIT : AbstractRestAssuredIT() {
         //============================
         // verify order was created and can be retrieved
         order = RestAssured.given()
-                .spec(defaultSpec())["/api/rest/orders/" + order.getScrudBeanId()]
+                .spec(defaultSpec())["/api/rest/orders/" + order.id]
                 .then()
                 .statusCode(200).extract().`as`(Order::class.java)
         assertEquals(email + "_updated_patched", order.email)
@@ -172,7 +172,7 @@ class RestServicesIT : AbstractRestAssuredIT() {
                     relationship = RestAssured.given()
                             .spec(defaultSpec())
                             .body(relationship)
-                            .put("/api/rest/productRelationships" + '/' + relationship.getScrudBeanId())
+                            .put("/api/rest/productRelationships" + '/' + relationship.id)
                             .then()
                             .statusCode(200).extract().`as`(ProductRelationship::class.java)
                     // Test Patch
@@ -181,12 +181,12 @@ class RestServicesIT : AbstractRestAssuredIT() {
                     relationship = RestAssured.given()
                             .spec(defaultSpec())
                             .body(patch)
-                            .put("/api/rest/productRelationships" + '/' + relationship.getScrudBeanId())
+                            .put("/api/rest/productRelationships" + '/' + relationship.id)
                             .then()
                             .statusCode(200).extract().`as`(ProductRelationship::class.java)
                     // Test Read
                     relationship = RestAssured.given()
-                            .spec(defaultSpec())["/api/rest/productRelationships" + '/' + relationship.getScrudBeanId()]
+                            .spec(defaultSpec())["/api/rest/productRelationships" + '/' + relationship.id]
                             .then()
                             .statusCode(200).extract().`as`(ProductRelationship::class.java)
                     assertEquals(description + "_updated_patched", relationship.description)

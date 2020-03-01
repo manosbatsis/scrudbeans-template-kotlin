@@ -5,7 +5,6 @@ import com.github.manosbatsis.scrudbeans.test.AbstractRestAssuredIT
 import io.restassured.RestAssured
 import mykotlinpackage.ScrudBeansSampleApplication
 import mykotlinpackage.model.DiscountCode
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -23,7 +22,7 @@ class RestErrorsIT : AbstractRestAssuredIT() {
                 .spec(defaultSpec())["api/rest/products/invalid"]
                 .then()
                 .statusCode(404).extract().`as`(SimpleErrorResponse::class.java)
-        assertEquals("Not Found", error.title)
+        assertEquals("Not Found", error.message)
         assertEquals(404, error.httpStatusCode)
     }
 
@@ -36,7 +35,7 @@ class RestErrorsIT : AbstractRestAssuredIT() {
                 .post("api/rest/discountCodes")
                 .then()
                 .statusCode(400).extract().`as`(SimpleErrorResponse::class.java)
-        assertEquals("Validation failed", error.title)
+        assertEquals("Validation failed", error.message)
         assertEquals(400, error.httpStatusCode)
         assertNotNull(error.validationErrors)
         val violations: Set<ConstraintViolationEntry> = error.validationErrors!!
@@ -65,7 +64,7 @@ class RestErrorsIT : AbstractRestAssuredIT() {
                 .post("/api/rest/discountCodes")
                 .then()
                 .statusCode(400).extract().`as`(SimpleErrorResponse::class.java)
-        assertEquals("Validation failed", error.title)
+        assertEquals("Validation failed", error.message)
         assertEquals(400, error.httpStatusCode)
         assertNotNull(error.validationErrors)
         val violations: Set<ConstraintViolationEntry> = error.validationErrors!!
