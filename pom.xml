@@ -15,7 +15,7 @@
 		<maven-failsafe-plugin.version>3.0.0-M3</maven-failsafe-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
 		<build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
-		<scrudbeans.version>0.18</scrudbeans.version>
+		<scrudbeans.version>0.19</scrudbeans.version>
 		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
 		<spring.version>5.2.4.RELEASE</spring.version>
 		<classgraph.version>4.8.44</classgraph.version>

@@ -4,7 +4,7 @@ buildscript {
 		h2_version = '1.4.199'
 		kotlin_version = '1.2.71'
 		springBootVersion = '2.2.5.RELEASE'
-		scrudbeans_version = '0.18'
+		scrudbeans_version = '0.19'
 		classgraph_version = '4.8.44'
 		springdoc_version = '1.2.17'
 		swagger3_version = '2.0.1'
