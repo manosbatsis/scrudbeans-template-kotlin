@@ -1,7 +1,7 @@
 package mykotlinpackage.model
 
-import com.github.manosbatsis.scrudbeans.api.domain.KPersistable
 import com.github.manosbatsis.scrudbeans.api.mdd.annotation.model.ScrudBean
+import com.github.manosbatsis.scrudbeans.model.AbstractHibernateKPersistable
 import com.github.manosbatsis.scrudbeans.validation.Unique
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -34,6 +34,4 @@ data class DiscountCode(
         @field:Column(nullable = false)
        // @field:ApiModelProperty(value = "The discount percentage", required = true)
         var percentage: Int? = null
-) : KPersistable<Long> {
-    override fun isNew(): Boolean = id == null
-}
+) : AbstractHibernateKPersistable<Long>()

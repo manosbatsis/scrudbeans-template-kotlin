@@ -1,8 +1,8 @@
 package mykotlinpackage.model
 
 
-import com.github.manosbatsis.scrudbeans.api.domain.KPersistable
 import com.github.manosbatsis.scrudbeans.api.mdd.annotation.model.ScrudBean
+import com.github.manosbatsis.scrudbeans.model.AbstractHibernateKPersistable
 import com.github.manosbatsis.scrudbeans.validation.Unique
 import javax.persistence.Column
 import javax.persistence.EmbeddedId
@@ -29,6 +29,4 @@ data class ProductRelationship(
         @field:Column(nullable = false, length = 512)
        // @field:ApiModelProperty(value = "The relationship short description (max 512 chars)", required = true)
         var description: String? = null
-) : KPersistable<ProductRelationshipIdentifier?> {
-    override fun isNew(): Boolean = id == null
-}
+) : AbstractHibernateKPersistable<ProductRelationshipIdentifier?>()
