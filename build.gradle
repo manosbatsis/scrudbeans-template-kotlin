@@ -4,7 +4,10 @@ buildscript {
 		h2_version = '1.4.199'
 		kotlin_version = '1.2.71'
 		springBootVersion = '2.2.5.RELEASE'
-		scrudbeansVersion = '0.18'
+		scrudbeans_version = '0.18'
+		classgraph_version = '4.8.44'
+		springdoc_version = '1.2.17'
+		swagger3_version = '2.0.1'
 	}
 
 
@@ -118,12 +121,16 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 	implementation group: 'com.h2database', name: 'h2'//, version: '1.4.197'
 
-	implementation("com.github.manosbatsis.scrudbeans:scrudbeans-spring-boot-starter:$scrudbeansVersion")
-	kapt("com.github.manosbatsis.scrudbeans:scrudbeans-annotation-processor-java:$scrudbeansVersion")
-	compile("com.h2database:h2:1.4.199")
+	implementation("com.github.manosbatsis.scrudbeans:scrudbeans-spring-boot-starter:$scrudbeans_version")
+	kapt("com.github.manosbatsis.scrudbeans:scrudbeans-annotation-processor-kotlin:$scrudbeans_version")
+
+	implementation("org.springdoc:springdoc-openapi-ui:$springdoc_version")
+	implementation("io.swagger.core.v3:swagger-annotations:$swagger3_version")
+	implementation("io.github.classgraph:classgraph:$classgraph_version")
+	implementation("com.h2database:h2:1.4.199")
 	testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
 	testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
-	testImplementation("com.github.manosbatsis.scrudbeans:scrudbeans-spring-boot-starter-test:$scrudbeansVersion")
+	testImplementation("com.github.manosbatsis.scrudbeans:scrudbeans-spring-boot-starter-test:$scrudbeans_version")
 }
 test {
 	useJUnitPlatform {

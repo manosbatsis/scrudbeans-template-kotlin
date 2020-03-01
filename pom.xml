@@ -18,8 +18,8 @@
 		<scrudbeans.version>0.18</scrudbeans.version>
 		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
 		<spring.version>5.2.4.RELEASE</spring.version>
-		<springdoc.version>1.2.32</springdoc.version>
-		<springdoc.version>1.2.32</springdoc.version>
+		<classgraph.version>4.8.44</classgraph.version>
+		<springdoc.version>1.2.17</springdoc.version>
 		<swagger3.version>2.0.1</swagger3.version>
 		<!-- tunn on/off as needed -->
 		<spring-boot.exclude-devtools>true</spring-boot.exclude-devtools>
@@ -48,12 +48,33 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>${springdoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.swagger.core.v3</groupId>
+				<artifactId>swagger-annotations</artifactId>
+				<version>${swagger3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.classgraph</groupId>
+				<artifactId>classgraph</artifactId>
+				<version>${classgraph.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>com.github.manosbatsis.scrudbeans</groupId>
 			<artifactId>scrudbeans-spring-boot-starter</artifactId>
+			<version>${scrudbeans.version}</version>
+		</dependency>
+		<!-- Provided/code generation Dependencies -->
+		<dependency>
+			<groupId>com.github.manosbatsis.scrudbeans</groupId>
+			<artifactId>scrudbeans-annotation-processor-kotlin</artifactId>
 			<version>${scrudbeans.version}</version>
 		</dependency>
 		<dependency>
@@ -85,12 +106,10 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>${springdoc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.swagger.core.v3</groupId>
 			<artifactId>swagger-annotations</artifactId>
-			<version>${swagger3.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
