@@ -1,4 +1,4 @@
-# ScrudBeans Project Template for Kotlin [![Build Status](https://travis-ci.org/manosbatsis/scrudbeans-template-kotlin.svg?branch=master)](https://travis-ci.org/manosbatsis/scrudbeans-template-kotlin)
+# ScrudBeans Project Template for Kotlin [![Build Status](https://travis-ci.com/manosbatsis/scrudbeans-template-kotlin.svg?branch=master)](https://travis-ci.com/manosbatsis/scrudbeans-template-kotlin)
 
 Sample project template for a [ScrudBeans](https://github.com/manosbatsis/scrudbeans) project.
 Demonstrates ScrudBeans generated component classes like repositories, services and controllers, as 
