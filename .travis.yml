@@ -1,5 +1,5 @@
 env:
-  - BUILD_COMMAND="./mvnw install"
+  - BUILD_COMMAND="./mvnw install -Dmaven.javadoc.skip=true -V -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
   - BUILD_COMMAND="./gradlew clean build integrationTest"
 
 language: java
